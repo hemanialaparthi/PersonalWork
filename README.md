@@ -7,4 +7,3 @@
 * ➕ [Scientific Calculator](../mypthon/scientificcalc.py)
 
 * 🤖 [Robot Barista](../mypython/robotbarista.py)
-
