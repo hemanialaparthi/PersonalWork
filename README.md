@@ -2,8 +2,8 @@
 
 ## 😃 This ReadMe consists of the links to my personal works in this repository! Feel free to test them out! 😊
 
-* 🧍‍♂️ [Hangman Game](../mypython/hangman.py)
+* 🧍‍♂️ [Hangman Game](../PersonalWork/hangman.py)
 
-* ➕ [Scientific Calculator](../mypthon/scientificcalc.py)
+* ➕ [Scientific Calculator](../PersonalWork/scientificcalc.py)
 
-* 🤖 [Robot Barista](../mypython/robotbarista.py)
+* 🤖 [Robot Barista](../PersonalWork/robotbarista.py)
