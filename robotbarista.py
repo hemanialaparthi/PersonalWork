@@ -21,6 +21,4 @@ while True:
             print("Invalid item. Your waiter will be at your table shortly to assist you.")
     else:
         print("Wrong Input. Please try again.")
-
-
-
+        exit()
