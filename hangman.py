@@ -6,10 +6,12 @@ import random
 def choose_word():
     " A function which contains list of words and chooses one on random using the random function"
     words = [
-        "apple", "banana", "orange", "grape", "kiwi", "melon", "strawberry", "pineapple",
-        "hate", "laptop", "computer", "love", "giraffe", "elephant", "zebra",
-        "sunflower", "butterfly", "watermelon", "keyboard", "lamp", "internet", "lion",
-        "developer", "astronaut", "universe", "galaxy", "moon", "spaceship", "planet"
+        "aberration", "ambiguous", "belligerent", "candid", "cognizant",
+        "cryptic", "deference", "elucidate", "fastidious", "gregarious",
+        "idiosyncratic", "juxtapose", "lament", "meticulous", "nostalgia",
+        "obfuscate", "paradigm", "quintessential", "recalcitrant", "sagacious",
+        "taciturn", "ubiquitous", "vex", "whimsical", "xenophobia",
+        "yearn", "zealous"
         ]
     return random.choice(words)
 
