@@ -55,25 +55,29 @@ class Bird(pygame.sprite.Sprite):
             if self.rect.bottom < 710:
                 self.rect.y += int(self.velocity)  # add to the y coord of the bird
             # add the jump function of the bird
-            if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
-                self.velocity = -10
-                self.clicked = True
-            if pygame.mouse.get_pressed()[0] == 0:
-                self.clicked = False
+            if game_over == False:
+                if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
+                    self.velocity = -10
+                    self.clicked = True
+                if pygame.mouse.get_pressed()[0] == 0:
+                    self.clicked = False
 
-            # handle the animation
-            self.counter += 1  # increase the counter by 1
-            birdflap_cooldown = 5
+                # handle the animation
+                self.counter += 1  # increase the counter by 1
+                birdflap_cooldown = 5
 
-            if self.counter > birdflap_cooldown:
-                self.counter = 0  # reset the counter
-                self.index += 1
-                if self.index >= len(self.images):
-                    self.index = 0
-                self.image = self.images[self.index]
+                if self.counter > birdflap_cooldown:
+                    self.counter = 0  # reset the counter
+                    self.index += 1
+                    if self.index >= len(self.images):
+                        self.index = 0
+                    self.image = self.images[self.index]
 
-            # bird rotation
-            self.image = pygame.transform.rotate(self.images[self.index], (self.velocity * -1))
+                # bird rotation
+                self.image = pygame.transform.rotate(self.images[self.index], (self.velocity * -1))
+            else:
+                self.image = pygame.transform.rotate(self.images[self.index], -90)
+        
 
 
 
@@ -101,11 +105,9 @@ while run_game:
         flying = False
 
     if game_over == False:
-        
-
-    ground_scroll -= scroll_speed  # decrease the ground scroll by scroll_speed
-    if abs(ground_scroll) > 35:
-        ground_scroll = 0
+        ground_scroll -= scroll_speed  # decrease the ground scroll by scroll_speed
+        if abs(ground_scroll) > 35:
+            ground_scroll = 0
 
     for event in pygame.event.get():  # gets all events that are happening
         if event.type == pygame.QUIT:  # if clicked on X/ quit
