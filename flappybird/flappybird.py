@@ -27,12 +27,14 @@ pipe_frequency = 1500  # ms
 last_pipe = pygame.time.get_ticks() - pipe_frequency  # subtracted w pipe_frequency so pipes get created as soon as game starts
 score = 0
 pass_pipe = False
+game_started = False
 
 # load images
 background = pygame.image.load('images/background.png')
 base = pygame.image.load('images/base3.png')
 powerup = pygame.image.load('images/powerup.jpeg')
 restart = pygame.image.load('images/restart.png')
+start = pygame.image.load('images/startbutton.png')
 
 # define a font
 font = pygame.font.SysFont('fredokaone', 60)
@@ -154,7 +156,8 @@ pipe_group = pygame.sprite.Group()
 flappy_bird = Bird(100, int(screen_height/2))
 bird_group.add(flappy_bird)
 
-button = Button(screen_width // 2, screen_height // 2, restart)  # creates an instance for button
+button = Button((screen_width // 2) + 50, screen_height // 2, restart)  # creates an instance for button
+startbutton = Button((screen_width // 2) + 75, screen_height // 2, start)
 
 # main run
 
@@ -186,7 +189,6 @@ while run_game:
 
     text_to_image(str(score), font, yellow, 10, 10)
 
-
     # check if collision w pipe occurs
     if pygame.sprite.groupcollide(bird_group, pipe_group, False, False) or flappy_bird.rect.top <= 0:
         game_over = True
@@ -217,6 +219,10 @@ while run_game:
         if button.draw_button() is True:
             game_over = False
             reset_game()
+    elif not game_started:
+        if startbutton.draw_button() is True:
+            game_started = True
+            bird_flying = True
 
     for event in pygame.event.get():  # gets all events that are happening
         if event.type == pygame.QUIT:  # if clicked on X/ quit
