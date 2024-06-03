@@ -32,7 +32,6 @@ game_started = False
 # load images
 background = pygame.image.load('images/background.png')
 base = pygame.image.load('images/base3.png')
-powerup = pygame.image.load('images/powerup.jpeg')
 restart = pygame.image.load('images/restart.png')
 start = pygame.image.load('images/startbutton.png')
 
