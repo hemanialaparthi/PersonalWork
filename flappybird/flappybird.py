@@ -37,7 +37,7 @@ restart = pygame.image.load('images/restart.png')
 start = pygame.image.load('images/startbutton.png')
 
 # define a font
-font = pygame.font.SysFont('fredokaone', 60)
+font = pygame.font.SysFont('fredokaone', 40)
 # color
 yellow = (255, 255, 0)
 
@@ -181,7 +181,6 @@ while run_game:
     # ground being drawn
     game_screen.blit(base, (ground_scroll, 710))
 
-    # score added:
     if len(pipe_group) > 0:
         if bird_group.sprites()[0].rect.left > pipe_group.sprites()[0].rect.left and \
                 bird_group.sprites()[0].rect.right < pipe_group.sprites()[0].rect.right and not pass_pipe:
@@ -192,7 +191,8 @@ while run_game:
                 score += 1
                 pass_pipe = False
 
-    text_to_image(str(score), font, yellow, 10, 10)
+    # score added:
+    text_to_image(f"SCORE: {score}", font, yellow, 10, 10)
 
     # check if collision w pipe occurs
     if pygame.sprite.groupcollide(bird_group, pipe_group, False, False) or flappy_bird.rect.top <= 0:
