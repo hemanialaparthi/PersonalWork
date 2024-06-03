@@ -28,6 +28,8 @@ last_pipe = pygame.time.get_ticks() - pipe_frequency  # subtracted w pipe_freque
 score = 0
 pass_pipe = False
 game_started = False
+powerup_frequency = 10000  # powerup appears every 5000 ms
+last_powerup = pygame.time.get_ticks() - powerup_frequency
 
 # load images
 background = pygame.image.load('images/background.png')
@@ -130,6 +132,19 @@ class Pipe(pygame.sprite.Sprite):
             self.kill()
 
 
+class PowerUp(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('images/powerup.png')
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+
+    def update(self):
+        self.rect.x -= scroll_speed
+        if self.rect.right < 0:
+            self.kill()
+
+
 class Button():
     def __init__(self, x, y, image):
         self.image = image  # store picture
@@ -156,6 +171,7 @@ class Button():
 # groups & instances
 bird_group = pygame.sprite.Group()  # keeps track of all the sprites added
 pipe_group = pygame.sprite.Group()
+powerup_group = pygame.sprite.Group()
 
 flappy_bird = Bird(100, int(screen_height / 2))
 bird_group.add(flappy_bird)
@@ -169,13 +185,11 @@ run_game = True
 while run_game:
 
     clock.tick(fps)
-
     game_screen.blit(background, (0, 0))
-
     bird_group.draw(game_screen)
     bird_group.update()
-
     pipe_group.draw(game_screen)
+    powerup_group.draw(game_screen)
 
     # ground being drawn
     game_screen.blit(base, (ground_scroll, 710))
@@ -212,11 +226,23 @@ while run_game:
             pipe_group.add(top_pipe)
             last_pipe = time_now
 
+            # check if enough time has gone by before powerup has been added
+            if (time_now - last_powerup) > powerup_frequency:
+                powerup_x = screen_width
+                powerup_y = int(screen_height / 2) + pipe_height
+                powerup = PowerUp(powerup_x, powerup_y)
+                powerup_group.add(powerup)
+                last_powerup = time_now
+
         ground_scroll -= scroll_speed  # decrease the ground scroll by scroll_speed
         if abs(ground_scroll) > 35:
             ground_scroll = 0
 
         pipe_group.update()
+        powerup_group.update()
+
+    if pygame.sprite.spritecollide(flappy_bird, powerup_group, True):
+        score += 2
 
     # restart the game
     if game_over is True:
