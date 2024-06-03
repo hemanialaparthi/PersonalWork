@@ -44,13 +44,18 @@ yellow = (255, 255, 0)
 
 # reset game
 def reset_game():
+    global score, bird_flying, game_started, ground_scroll, last_pipe, pass_pipe
     pipe_group.empty()  # empty the pipes
     flappy_bird.rect.x = 100
-    flappy_bird.rect.y = int(screen_height/2)
-    global score
-    score = 0
+    flappy_bird.rect.y = int(screen_height / 2)
     flappy_bird.velocity = 0
-    return score
+    flappy_bird.clicked = False
+    score = 0
+    bird_flying = False
+    game_started = False
+    ground_scroll = 0
+    last_pipe = pygame.time.get_ticks() - pipe_frequency
+    pass_pipe = False
 
 
 # score text
@@ -86,10 +91,10 @@ class Bird(pygame.sprite.Sprite):
                 self.rect.y += int(self.velocity)  # add to the y coord of the bird
             # add the jump function of the bird
             if game_over is False:
-                if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
+                if (pygame.mouse.get_pressed()[0] == 1 or pygame.key.get_pressed()[pygame.K_SPACE]) and not self.clicked:
                     self.velocity = -8
                     self.clicked = True
-                if pygame.mouse.get_pressed()[0] == 0:
+                if pygame.mouse.get_pressed()[0] == 0 and not pygame.key.get_pressed()[pygame.K_SPACE]:
                     self.clicked = False
 
                 # handle the animation
@@ -116,9 +121,9 @@ class Pipe(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         if pos == 1:  # if pos is 1 it is from top, -1 would be bottom
             self.image = pygame.transform.flip(self.image, False, True)  # true means will be flipped on y axis
-            self.rect.bottomleft = [x, y - int(pipe_spacing/2)]
+            self.rect.bottomleft = [x, y - int(pipe_spacing / 2)]
         if pos == -1:
-            self.rect.topleft = [x, y + int(pipe_spacing/2)]
+            self.rect.topleft = [x, y + int(pipe_spacing / 2)]
 
     def update(self):
         self.rect.x -= scroll_speed
@@ -133,7 +138,7 @@ class Button():
         self.rect.topright = (x, y)
 
     def draw_button(self):
-        """ Draws the function """
+        """ Draws the button """
 
         # mouse position
         position = pygame.mouse.get_pos()
@@ -153,7 +158,7 @@ class Button():
 bird_group = pygame.sprite.Group()  # keeps track of all the sprites added
 pipe_group = pygame.sprite.Group()
 
-flappy_bird = Bird(100, int(screen_height/2))
+flappy_bird = Bird(100, int(screen_height / 2))
 bird_group.add(flappy_bird)
 
 button = Button((screen_width // 2) + 50, screen_height // 2, restart)  # creates an instance for button
@@ -202,8 +207,8 @@ while run_game:
         time_now = pygame.time.get_ticks()  # gets the current time
         if (time_now - last_pipe) > pipe_frequency:
             pipe_height = random.randint(-100, 100)
-            bottom_pipe = Pipe(screen_width, int(screen_height/2) + pipe_height, -1)  # screen width used to create just off the screen
-            top_pipe = Pipe(screen_width, int((screen_height)/2) + pipe_height, 1)
+            bottom_pipe = Pipe(screen_width, int(screen_height / 2) + pipe_height, -1)  # screen width used to create just off the screen
+            top_pipe = Pipe(screen_width, int((screen_height) / 2) + pipe_height, 1)
             pipe_group.add(bottom_pipe)  # add to group so it can be shown or else will only be an instance
             pipe_group.add(top_pipe)
             last_pipe = time_now
@@ -217,9 +222,8 @@ while run_game:
     # restart the game
     if game_over is True:
         if button.draw_button() is True:
-            game_over = False
-            bird_flying = False
             reset_game()
+            game_over = False
     elif not game_started:
         if startbutton.draw_button() is True:
             game_started = True
@@ -230,8 +234,11 @@ while run_game:
             run_game = False  # set the run_game to False
         if event.type == pygame.MOUSEBUTTONDOWN and game_started and not game_over:
             bird_flying = True
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and game_started and not game_over:
+                bird_flying = True
+                flappy_bird.velocity = -8  # jump force when the spacebar is clicked
 
     pygame.display.update()  # updates everything that has been added
 
 pygame.quit()  # quit the game
-
