@@ -16,7 +16,7 @@ screen_height = 800
 game_screen = pygame.display.set_mode((screen_width, screen_height))  # creates the blank game window
 pygame.display.set_caption("Welcome to Flappy Bird - New Mod")  # adds caption to the game
 
-# add the game variables
+# add game variables
 
 ground_scroll = 0
 scroll_speed = 4
@@ -157,7 +157,7 @@ flappy_bird = Bird(100, int(screen_height/2))
 bird_group.add(flappy_bird)
 
 button = Button((screen_width // 2) + 50, screen_height // 2, restart)  # creates an instance for button
-startbutton = Button((screen_width // 2) + 75, screen_height // 2, start)
+startbutton = Button((screen_width // 2) + 50, (screen_height // 2), start)
 
 # main run
 
@@ -213,11 +213,12 @@ while run_game:
             ground_scroll = 0
 
         pipe_group.update()
-    
+
     # restart the game
     if game_over is True:
         if button.draw_button() is True:
             game_over = False
+            bird_flying = False
             reset_game()
     elif not game_started:
         if startbutton.draw_button() is True:
@@ -227,9 +228,10 @@ while run_game:
     for event in pygame.event.get():  # gets all events that are happening
         if event.type == pygame.QUIT:  # if clicked on X/ quit
             run_game = False  # set the run_game to False
-        if event.type == pygame.MOUSEBUTTONDOWN and bird_flying == False and game_over == False:
+        if event.type == pygame.MOUSEBUTTONDOWN and game_started and not game_over:
             bird_flying = True
 
     pygame.display.update()  # updates everything that has been added
 
 pygame.quit()  # quit the game
+
