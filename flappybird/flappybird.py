@@ -226,7 +226,7 @@ while run_game:
             pipe_group.add(top_pipe)
             last_pipe = time_now
 
-            # check if enough time has gone by before powerup has been added
+            # check if enough time has gone by before powerup has been addedc
             if (time_now - last_powerup) > powerup_frequency:
                 powerup_x = screen_width
                 powerup_y = int(screen_height / 2) + pipe_height
